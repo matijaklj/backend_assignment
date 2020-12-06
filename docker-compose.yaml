@@ -1,0 +1,41 @@
+version: "3"
+services:
+  zookeeper:
+    image: "zookeeper:3.4"
+    ports:
+      - "2181:2181"
+    networks:
+      - "backend-service-net"
+  kafka:
+    image: "ches/kafka"
+    ports:
+      - "9092:9092"
+    networks:
+      - "backend-service-net"
+    environment:
+      - ZOOKEEPER_IP=zookeeper
+     # - KAFKA_ADVERTISED_HOST_NAME={docker_host_ip} # todo
+    depends_on:
+      - zookeeper
+  postgres-db:
+    image: "postgres:latest"
+    networks:
+      - "backend-service-net"
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=accounts
+  tracking-service:
+    image: "tracking-service"
+    networks:
+      - "backend-service-net"
+    ports:
+      - "8080:8080"
+    depends_on:
+      - kafka
+      - postgres-db
+
+networks:
+  backend-service-net:
