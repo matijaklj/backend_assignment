@@ -3,19 +3,11 @@ package com.backend.backend.assigment.cli.client;
 import com.backend.backend.assigment.cli.client.exceptions.ClientException;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
-import org.apache.logging.log4j.Level;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.core.config.Configuration;
-import org.apache.logging.log4j.core.LoggerContext;
-import org.apache.logging.log4j.core.config.LoggerConfig;
 import picocli.CommandLine.Option;
 import picocli.CommandLine;
 
 import java.io.File;
 import java.io.IOException;
-import java.math.BigInteger;
-import java.nio.file.Files;
-import java.security.MessageDigest;
 import java.time.Duration;
 import java.util.*;
 import java.util.concurrent.Callable;
@@ -49,11 +41,12 @@ public class CliClient implements Callable<Integer> {
 
             this.kafkaClient = new KafkaClient(consumerConfig, this.verbose);
 
+            // pool kafka for new events in an infinite loop
             while (true) {
                 if (filters.isEmpty()) {
                     topics = kafkaClient.getTopics();
                 } else {
-                    // name of the topic is: "event-" + accountId
+                    // name of the event topics is formatted as 'event-{accountId}'
                     topics = filters.stream().map(f -> "event-" + f).collect(Collectors.toSet());
                 }
 
@@ -63,7 +56,7 @@ public class CliClient implements Callable<Integer> {
                     while (true) {
                         ConsumerRecords<String, String> records = kafkaClient.getConsumer().poll(Duration.ofMillis(100));
                         for (ConsumerRecord<String, String> record : records) {
-                            System.out.printf("timestamp = %s, key = %s, data = %s%n", new Date(record.timestamp()), record.key(), record.value());
+                            System.out.printf("timestamp = %s, accountId = %s, data = %s%n", new Date(record.timestamp()), record.key(), record.value());
                         }
 
                         if (filters.isEmpty()) {

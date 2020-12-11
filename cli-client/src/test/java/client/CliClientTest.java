@@ -16,13 +16,9 @@ import java.util.List;
 
 public class CliClientTest {
 
-    private final PrintStream originalStdOut = System.out;
-    private ByteArrayOutputStream consoleContent = new ByteArrayOutputStream();
-
     @BeforeClass
     public void setUp() {
         // code that will be invoked when this test is instantiated
-        System.setOut(new PrintStream(this.consoleContent));
     }
 
     @Test

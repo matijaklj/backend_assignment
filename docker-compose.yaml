@@ -14,7 +14,6 @@ services:
       - "backend-service-net"
     environment:
       - ZOOKEEPER_IP=zookeeper
-     # - KAFKA_ADVERTISED_HOST_NAME={docker_host_ip} # todo
     depends_on:
       - zookeeper
   postgres-db:
@@ -36,6 +35,8 @@ services:
     depends_on:
       - kafka
       - postgres-db
+#    environment: # set custom port
+#      - PORT=8081
 
 networks:
   backend-service-net:

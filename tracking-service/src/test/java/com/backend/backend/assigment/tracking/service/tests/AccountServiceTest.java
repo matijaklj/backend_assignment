@@ -11,6 +11,9 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import javax.inject.Inject;
+import java.text.Format;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 public class AccountServiceTest extends Arquillian {
@@ -37,11 +40,11 @@ public class AccountServiceTest extends Arquillian {
 
     @Test
     public void testGetAccountById() {
-        Account acc1 = accountService.getAccount("0");
+        Account acc1 = accountService.getAccount("test-0");
         Assert.assertNotNull(acc1);
         Assert.assertTrue(acc1.isActive());
 
-        Account acc2 = accountService.getAccount("1");
+        Account acc2 = accountService.getAccount("test-1");
         Assert.assertNotNull(acc2);
         Assert.assertFalse(acc2.isActive());
     }
@@ -50,15 +53,17 @@ public class AccountServiceTest extends Arquillian {
     public void testGetAccounts() {
         List<Account> accountList = accountService.getAccounts();
         Assert.assertNotNull(accountList);
-        Assert.assertEquals(accountList.size(), 2);
+        Assert.assertEquals(accountList.size(), 3);
     }
 
     @Test
     public void testSaveAccount() {
-        Account account = new Account("3", "Test Account", false);
+        Format formatter = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
+        String date = formatter.format(new Date());
+        Account account = new Account("test-" + date, "Test Account", false);
         this.accountService.saveAccount(account);
 
-        Account savedAccount = this.accountService.getAccount("3");
+        Account savedAccount = this.accountService.getAccount("test-" + date);
         Assert.assertNotNull(savedAccount);
         Assert.assertEquals(account.getId(), savedAccount.getId());
         Assert.assertFalse(savedAccount.isActive());

@@ -6,6 +6,6 @@ import javax.ws.rs.core.Application;
 /**
  * @author Matija Kljun
  */
-@ApplicationPath("v1")
+@ApplicationPath("")
 public class TrackerServiceApplication extends Application {
 }

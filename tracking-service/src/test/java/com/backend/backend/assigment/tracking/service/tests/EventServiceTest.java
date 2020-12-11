@@ -43,7 +43,7 @@ public class EventServiceTest extends Arquillian {
     @Test
     public void publishEvent() {
         CompletableFuture<Response> future = new CompletableFuture<>();
-        eventService.publishEvent("0", "data", future);
+        eventService.publishEvent("test-0", "data", future);
 
         try {
             Response response = future.get();
@@ -57,7 +57,7 @@ public class EventServiceTest extends Arquillian {
     @Test
     public void publishEventAccountNotActive() {
         CompletableFuture<Response> future = new CompletableFuture<>();
-        eventService.publishEvent("1", "data", future);
+        eventService.publishEvent("test-1", "data", future);
 
         try {
             Response response = future.get();
@@ -71,7 +71,7 @@ public class EventServiceTest extends Arquillian {
     @Test
     public void publishEventNoAccount() {
         CompletableFuture<Response> future = new CompletableFuture<>();
-        eventService.publishEvent("xxx", "data", future);
+        eventService.publishEvent("non-existent-id", "data", future);
 
         try {
             Response response = future.get();

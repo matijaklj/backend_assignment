@@ -60,7 +60,7 @@ public class KafkaClient {
             consumerProp.setProperty("group.id", "test");
             consumerProp.setProperty("enable.auto.commit", "true");
             consumerProp.setProperty("auto.commit.interval.ms", "1000");
-            consumerProp.setProperty("auto.offset.reset", "earliest");
+            consumerProp.setProperty("auto.offset.reset", "latest");
             consumerProp.setProperty("key.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
             consumerProp.setProperty("value.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
         }
@@ -81,6 +81,8 @@ public class KafkaClient {
 
         try {
             topics = adminClient.listTopics(listTopicsOptions).names().get();
+
+            // event topics are formatted as 'event-{accountId}'
             topics = topics.stream().filter(t -> t.startsWith("event-")).collect(Collectors.toSet());
         } catch (Exception e) {
             System.out.println("Error fetching topics...");

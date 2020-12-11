@@ -16,7 +16,6 @@
 
     <name>Backend assigment</name>
 
-
     <developers>
         <developer>
             <name>Matija Kljun</name>
@@ -25,13 +24,6 @@
             <url>https://github.com/matijaklj</url>
         </developer>
     </developers>
-
-    <licenses>
-        <license>
-            <name>MIT License</name>
-            <url>http://www.opensource.org/licenses/mit-license.php</url>
-        </license>
-    </licenses>
 
     <pluginRepositories>
         <pluginRepository>
